@@ -2,8 +2,6 @@ from abc import ABC, abstractmethod
 from decimal import Decimal, getcontext
 import copy
 
-# Set Decimal precision if needed (optional)
-# getcontext().prec = 28
 
 class ABCMatrix(ABC):
     """Abstract base class for matrices."""
@@ -678,3 +676,7 @@ class CSRMatrix(ABCMatrix):
         # Use to_list() to get the dense data
         temp_base_mat = BaseMatrix(self.to_list())
         return temp_base_mat.determinant() # Delegate calculation
+
+
+# Optional: Define Matrix alias if needed elsewhere
+Matrix = BaseMatrix
