@@ -350,6 +350,7 @@ class BaseMatrix(ABCMatrix):
     def get_loc(self, row_index: int, col_index: int) -> Decimal | complex | float:
         """Returns the element at the specified (row, col) index."""
         return self[row_index, col_index]  # Delegate to __getitem__
+        # TODO remake
 
     def set_row(
         self, row_index: int, row_data: list[Decimal | complex | float]
