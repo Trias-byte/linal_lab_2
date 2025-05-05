@@ -112,9 +112,10 @@ class ABCMatrix(ABC):
     @abstractmethod
     def determinant(self) -> Decimal | complex | float:
         pass
-    
-    def handle_missing_values(self, mat: list[list[None| Decimal | complex | float]]):
+
+    def handle_missing_values(self, mat: list[list[None | Decimal | complex | float]]):
         pass
+
 
 class BaseMatrix(ABCMatrix):
     """Implementation of a matrix using a list of lists."""
@@ -603,38 +604,6 @@ class BaseMatrix(ABCMatrix):
             return self.dtype(0)
 
         return det
-    
-    def handle_missing_values(self, mat: list[list[None | Decimal | complex | float]]) -> list[list[Decimal | complex | float]]:
-        rows, cols = (len(mat), len(mat[0]))
-        filled_mat_data = copy.deepcopy(mat)
-        for j in range(cols):
-            col_sum = 0.0
-            non_nan_count = 0
-            column_has_nan = False 
-            for i in range(rows):
-                try:
-                    value = float(mat[i, j])
-                    if not math.isnan(value):
-                        col_sum += value
-                        non_nan_count += 1
-                    else:
-                        column_has_nan = True
-                except (TypeError, ValueError):
-                    pass
-            col_mean = 0.0
-            if non_nan_count > 0:
-                col_mean = col_sum / non_nan_count
-            if column_has_nan:
-                for i in range(rows):
-                    try:
-                        value = float(filled_mat_data[i][j])
-                        if math.isnan(value):
-                            filled_mat_data[i][j] = type(mat[i,j])(col_mean) if not isinstance(mat[i,j], complex) else float(col_mean) # Попытка сохранить тип данных
-
-                    except (TypeError, ValueError):
-                        pass
-        return filled_mat_data
-
 
 
 class CSRMatrix(ABCMatrix):
@@ -1110,34 +1079,3 @@ class CSRMatrix(ABCMatrix):
 
         temp_base_mat = BaseMatrix(self.to_list())
         return temp_base_mat.determinant()
-
-    def handle_missing_values(self, mat: list[list[None | Decimal | complex | float]]) -> list[list[Decimal | complex | float]]:
-        rows, cols = (len(mat), len(mat[0]))
-        filled_mat_data = copy.deepcopy(mat)
-        for j in range(cols):
-            col_sum = 0.0
-            non_nan_count = 0
-            column_has_nan = False 
-            for i in range(rows):
-                try:
-                    value = float(mat[i, j])
-                    if not math.isnan(value):
-                        col_sum += value
-                        non_nan_count += 1
-                    else:
-                        column_has_nan = True
-                except (TypeError, ValueError):
-                    pass
-            col_mean = 0.0
-            if non_nan_count > 0:
-                col_mean = col_sum / non_nan_count
-            if column_has_nan:
-                for i in range(rows):
-                    try:
-                        value = float(filled_mat_data[i][j])
-                        if math.isnan(value):
-                            filled_mat_data[i][j] = type(mat[i,j])(col_mean) if not isinstance(mat[i,j], complex) else float(col_mean) # Попытка сохранить тип данных
-
-                    except (TypeError, ValueError):
-                        pass
-        return filled_mat_data
